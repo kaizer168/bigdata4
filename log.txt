@@ -383,3 +383,133 @@ INFO  : Concurrency mode is disabled, not creating a lock manager
 10 rows selected (14.081 seconds)
 0: jdbc:hive2://localhost:10000>
 
+0: jdbc:hive2://localhost:10000> select u.userid, count(*) as total from t_rating r join t_user u on (r.userid = u.userid) where u.sex = 'F' group by u.userid order by total desc limit 10;
+INFO  : Compiling command(queryId=hadoop_20220401234024_08d710a0-9a91-4b7d-aab2-1abc4a42cab0): select u.userid, count(*) as total from t_rating r join t_user u on (r.userid = u.userid) where u.sex = 'F' group by u.userid order by total desc limit 10
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Returning Hive schema: Schema(fieldSchemas:[FieldSchema(name:u.userid, type:bigint, comment:null), FieldSchema(name:total, type:bigint, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hadoop_20220401234024_08d710a0-9a91-4b7d-aab2-1abc4a42cab0); Time taken: 0.115 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hadoop_20220401234024_08d710a0-9a91-4b7d-aab2-1abc4a42cab0): select u.userid, count(*) as total from t_rating r join t_user u on (r.userid = u.userid) where u.sex = 'F' group by u.userid order by total desc limit 10
+INFO  : Query ID = hadoop_20220401234024_08d710a0-9a91-4b7d-aab2-1abc4a42cab0
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in parallel
+----------------------------------------------------------------------------------------------
+        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+----------------------------------------------------------------------------------------------
+Map 4 .......... container     SUCCEEDED      1          1        0        0       0       0
+Map 1 .......... container     SUCCEEDED      1          1        0        0       0       0
+Reducer 2 ...... container     SUCCEEDED      4          4        0        0       0       0
+Reducer 3 ...... container     SUCCEEDED      1          1        0        0       0       0
+----------------------------------------------------------------------------------------------
+VERTICES: 04/04  [==========================>>] 100%  ELAPSED TIME: 9.21 s
+----------------------------------------------------------------------------------------------
+INFO  : Completed executing command(queryId=hadoop_20220401234024_08d710a0-9a91-4b7d-aab2-1abc4a42cab0); Time taken: 10.001 seconds
+INFO  : OK
+INFO  : Concurrency mode is disabled, not creating a lock manager
++-----------+--------+
+| u.userid  | total  |
++-----------+--------+
+| 1150      | 1302   |
+| 1088      | 1176   |
+| 3224      | 1115   |
+| 3539      | 1078   |
+| 5643      | 1047   |
+| 1448      | 1038   |
+| 752       | 1024   |
+| 1605      | 964    |
+| 3292      | 939    |
+| 2106      | 900    |
++-----------+--------+
+10 rows selected (10.126 seconds)
+
+0: jdbc:hive2://localhost:10000> select m.movieid, m.moviename, r.rate from t_rating r join t_user u on (r.userid = u.userid) join t_movie m on (m.movieid = r.movieid) where u.userid = '1150' order by r.rate desc limit 10;
+INFO  : Compiling command(queryId=hadoop_20220401235910_5d69a702-ae96-404f-ab3b-daab8b762776): select m.movieid, m.moviename, r.rate from t_rating r join t_user u on (r.userid = u.userid) join t_movie m on (m.movieid = r.movieid) where u.userid = '1150' order by r.rate desc limit 10
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : No Stats for cheechuen@t_rating, Columns: rate, movieid, userid
+INFO  : No Stats for cheechuen@t_user, Columns: userid
+INFO  : No Stats for cheechuen@t_movie, Columns: movieid, moviename
+INFO  : Warning: Map Join MAPJOIN[26][bigTable=?] in task 'Map 2' is a cross product
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Returning Hive schema: Schema(fieldSchemas:[FieldSchema(name:m.movieid, type:bigint, comment:null), FieldSchema(name:m.moviename, type:string, comment:null), FieldSchema(name:r.rate, type:bigint, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hadoop_20220401235910_5d69a702-ae96-404f-ab3b-daab8b762776); Time taken: 0.215 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hadoop_20220401235910_5d69a702-ae96-404f-ab3b-daab8b762776): select m.movieid, m.moviename, r.rate from t_rating r join t_user u on (r.userid = u.userid) join t_movie m on (m.movieid = r.movieid) where u.userid = '1150' order by r.rate desc limit 10
+INFO  : Query ID = hadoop_20220401235910_5d69a702-ae96-404f-ab3b-daab8b762776
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in parallel
+----------------------------------------------------------------------------------------------
+        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+----------------------------------------------------------------------------------------------
+Map 1 .......... container     SUCCEEDED      1          1        0        0       0       0
+Map 4 .......... container     SUCCEEDED      1          1        0        0       0       0
+Map 2 .......... container     SUCCEEDED      1          1        0        0       0       0
+Reducer 3 ...... container     SUCCEEDED      1          1        0        0       0       0
+----------------------------------------------------------------------------------------------
+VERTICES: 04/04  [==========================>>] 100%  ELAPSED TIME: 11.30 s
+----------------------------------------------------------------------------------------------
+INFO  : Completed executing command(queryId=hadoop_20220401235910_5d69a702-ae96-404f-ab3b-daab8b762776); Time taken: 12.001 seconds
+INFO  : OK
+INFO  : Concurrency mode is disabled, not creating a lock manager
++------------+----------------------------------------------------+---------+
+| m.movieid  |                    m.moviename                     | r.rate  |
++------------+----------------------------------------------------+---------+
+| 1256       | Duck Soup (1933)                                   | 5       |
+| 1094       | Crying Game, The (1992)                            | 5       |
+| 905        | It Happened One Night (1934)                       | 5       |
+| 2064       | Roger & Me (1989)                                  | 5       |
+| 2997       | Being John Malkovich (1999)                        | 5       |
+| 750        | Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1963) | 5       |
+| 904        | Rear Window (1954)                                 | 5       |
+| 1236       | Trust (1990)                                       | 5       |
+| 1279       | Night on Earth (1991)                              | 5       |
+| 745        | Close Shave, A (1995)                              | 5       |
++------------+----------------------------------------------------+---------+
+10 rows selected (12.255 seconds)
+
+0: jdbc:hive2://localhost:10000> select m.moviename, avg(r.rate) as avgrate from t_rating r join t_user u on (r.userid = u.userid) join t_movie m on (m.movieid = r.movieid) where m.movieid in ('1256','1094','905','2064','2997','750','904','1236','1279','745') group by m.moviename;
+INFO  : Compiling command(queryId=hadoop_20220402000242_8ca91a68-b06e-44c2-9982-12b1f5e6cfcc): select m.moviename, avg(r.rate) as avgrate from t_rating r join t_user u on (r.userid = u.userid) join t_movie m on (m.movieid = r.movieid) where m.movieid in ('1256','1094','905','2064','2997','750','904','1236','1279','745') group by m.moviename
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : No Stats for cheechuen@t_rating, Columns: rate, movieid, userid
+INFO  : No Stats for cheechuen@t_user, Columns: userid
+INFO  : No Stats for cheechuen@t_movie, Columns: movieid, moviename
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Returning Hive schema: Schema(fieldSchemas:[FieldSchema(name:m.moviename, type:string, comment:null), FieldSchema(name:avgrate, type:double, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hadoop_20220402000242_8ca91a68-b06e-44c2-9982-12b1f5e6cfcc); Time taken: 0.206 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hadoop_20220402000242_8ca91a68-b06e-44c2-9982-12b1f5e6cfcc): select m.moviename, avg(r.rate) as avgrate from t_rating r join t_user u on (r.userid = u.userid) join t_movie m on (m.movieid = r.movieid) where m.movieid in ('1256','1094','905','2064','2997','750','904','1236','1279','745') group by m.moviename
+INFO  : Query ID = hadoop_20220402000242_8ca91a68-b06e-44c2-9982-12b1f5e6cfcc
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in parallel
+----------------------------------------------------------------------------------------------
+        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED
+----------------------------------------------------------------------------------------------
+Map 1 .......... container     SUCCEEDED      1          1        0        0       0       0
+Map 4 .......... container     SUCCEEDED      1          1        0        0       0       0
+Map 2 .......... container     SUCCEEDED      1          1        0        0       0       0
+Reducer 3 ...... container     SUCCEEDED      2          2        0        0       0       0
+----------------------------------------------------------------------------------------------
+VERTICES: 04/04  [==========================>>] 100%  ELAPSED TIME: 11.19 s
+----------------------------------------------------------------------------------------------
+INFO  : Completed executing command(queryId=hadoop_20220402000242_8ca91a68-b06e-44c2-9982-12b1f5e6cfcc); Time taken: 12.001 seconds
+INFO  : OK
+INFO  : Concurrency mode is disabled, not creating a lock manager
++----------------------------------------------------+---------------------+
+|                    m.moviename                     |       avgrate       |
++----------------------------------------------------+---------------------+
+| Being John Malkovich (1999)                        | 4.125390450691656   |
+| Crying Game, The (1992)                            | 3.7314890154597236  |
+| Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1963) | 4.4498902706656915  |
+| Duck Soup (1933)                                   | 4.21043771043771    |
+| Rear Window (1954)                                 | 4.476190476190476   |
+| Trust (1990)                                       | 4.188888888888889   |
+| Close Shave, A (1995)                              | 4.52054794520548    |
+| It Happened One Night (1934)                       | 4.280748663101604   |
+| Night on Earth (1991)                              | 3.747422680412371   |
+| Roger & Me (1989)                                  | 4.0739348370927315  |
++----------------------------------------------------+---------------------+
+10 rows selected (12.217 seconds)
+0: jdbc:hive2://localhost:10000>
