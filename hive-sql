@@ -28,3 +28,53 @@ where u.sex = 'M' group by m.moviename having total > 50 order by avgrate desc l
 | Paths of Glory (1957)                              | 4.485148514851486  | 202    |
 | Wrong Trousers, The (1993)                         | 4.478260869565218  | 644    |
 +----------------------------------------------------+--------------------+--------+
+
+3.1 select u.userid, count(*) as total from t_rating r join t_user u on (r.userid = u.userid) where u.sex = 'F' group by u.userid order by total desc limit 10;
++-----------+--------+
+| u.userid  | total  |
++-----------+--------+
+| 1150      | 1302   |
+| 1088      | 1176   |
+| 3224      | 1115   |
+| 3539      | 1078   |
+| 5643      | 1047   |
+| 1448      | 1038   |
+| 752       | 1024   |
+| 1605      | 964    |
+| 3292      | 939    |
+| 2106      | 900    |
++-----------+--------+
+
+3.2 select m.movieid, m.moviename, r.rate from t_rating r join t_user u on (r.userid = u.userid) join t_movie m on (m.movieid = r.movieid) 
+where u.userid = '1150' order by r.rate desc limit 10;
++------------+----------------------------------------------------+---------+
+| m.movieid  |                    m.moviename                     | r.rate  |
++------------+----------------------------------------------------+---------+
+| 1256       | Duck Soup (1933)                                   | 5       |
+| 1094       | Crying Game, The (1992)                            | 5       |
+| 905        | It Happened One Night (1934)                       | 5       |
+| 2064       | Roger & Me (1989)                                  | 5       |
+| 2997       | Being John Malkovich (1999)                        | 5       |
+| 750        | Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1963) | 5       |
+| 904        | Rear Window (1954)                                 | 5       |
+| 1236       | Trust (1990)                                       | 5       |
+| 1279       | Night on Earth (1991)                              | 5       |
+| 745        | Close Shave, A (1995)                              | 5       |
++------------+----------------------------------------------------+---------+
+
+3.3 select m.moviename, avg(r.rate) as avgrate from t_rating r join t_user u on (r.userid = u.userid) join t_movie m on (m.movieid = r.movieid) 
+where m.movieid in ('1256','1094','905','2064','2997','750','904','1236','1279','745') group by m.moviename;
++----------------------------------------------------+---------------------+
+|                    m.moviename                     |       avgrate       |
++----------------------------------------------------+---------------------+
+| Being John Malkovich (1999)                        | 4.125390450691656   |
+| Crying Game, The (1992)                            | 3.7314890154597236  |
+| Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1963) | 4.4498902706656915  |
+| Duck Soup (1933)                                   | 4.21043771043771    |
+| Rear Window (1954)                                 | 4.476190476190476   |
+| Trust (1990)                                       | 4.188888888888889   |
+| Close Shave, A (1995)                              | 4.52054794520548    |
+| It Happened One Night (1934)                       | 4.280748663101604   |
+| Night on Earth (1991)                              | 3.747422680412371   |
+| Roger & Me (1989)                                  | 4.0739348370927315  |
++----------------------------------------------------+---------------------+
